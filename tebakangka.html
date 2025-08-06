@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Tebak Angka</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+        .form {
+            margin-top: 20px;
+        }
+
+        .tebakanMasuk {
+            width: 80px;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #tombolTebak {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        #tombolTebak:hover {
+            background-color: #0056b3;
+        }
+
+        .hasil {
+            margin-top: 20px;
+        }
+
+        .tebakanTerakhir, .hasilTebakan {
+            font-weight: bold;
+        }
+
+        .tebakanTerakhir {
+            color: #007bff;
+        }
+
+        .hasilTebakan.benar {
+            color: #28a745;
+        }
+
+        .hasilTebakan.salah {
+            color: #dc3545;
+        }
+
+        .tombolUlang {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Game Tebak Angka 🎲</h1>
+        <p>Saya sudah memikirkan sebuah angka antara 1 sampai 100. Coba tebak!</p>
+
+        <div class="form">
+            <label for="tebakanMasuk">Masukkan tebakan:</label>
+            <input type="number" id="tebakanMasuk" class="tebakanMasuk">
+            <button id="tombolTebak">Tebak!</button>
+        </div>
+
+        <div class="hasil">
+            <p class="tebakanTerakhir"></p>
+            <p class="hasilTebakan"></p>
+            <p class="jumlahTebakan"></p>
+        </div>
+    </div>
+
+    <script>
+        let angkaAcak = Math.floor(Math.random() * 100) + 1;
+        let hitunganTebakan = 1;
+        let tombolUlang;
+
+        const tebakanTerakhir = document.querySelector('.tebakanTerakhir');
+        const hasilTebakan = document.querySelector('.hasilTebakan');
+        const jumlahTebakan = document.querySelector('.jumlahTebakan');
+        const tebakanMasuk = document.querySelector('.tebakanMasuk');
+        const tombolTebak = document.querySelector('#tombolTebak');
+
+        function periksaTebakan() {
+            let tebakanPengguna = Number(tebakanMasuk.value);
+
+            // Memeriksa apakah ini tebakan pertama
+            if (hitunganTebakan === 1) {
+                tebakanTerakhir.textContent = 'Tebakan sebelumnya: ';
+            }
+            tebakanTerakhir.textContent += tebakanPengguna + ' ';
+            jumlahTebakan.textContent = `Jumlah tebakan: ${hitunganTebakan}`;
+
+            // Logika permainan
+            if (tebakanPengguna === angkaAcak) {
+                hasilTebakan.textContent = 'Selamat! Anda benar! 🎉';
+                hasilTebakan.classList.remove('salah');
+                hasilTebakan.classList.add('benar');
+                setGameOver();
+            } else if (hitunganTebakan === 10) {
+                hasilTebakan.textContent = '!!!GAME OVER!!! 💔';
+                setGameOver();
+            } else {
+                hasilTebakan.textContent = 'Salah!';
+                hasilTebakan.classList.remove('benar');
+                hasilTebakan.classList.add('salah');
+                if (tebakanPengguna < angkaAcak) {
+                    hasilTebakan.textContent += ' Angka terlalu rendah!';
+                } else if (tebakanPengguna > angkaAcak) {
+                    hasilTebakan.textContent += ' Angka terlalu tinggi!';
+                }
+            }
+
+            hitunganTebakan++;
+            tebakanMasuk.value = '';
+            tebakanMasuk.focus();
+        }
+
+        tombolTebak.addEventListener('click', periksaTebakan);
+
+        function setGameOver() {
+            tebakanMasuk.disabled = true;
+            tombolTebak.disabled = true;
+            tombolUlang = document.createElement('button');
+            tombolUlang.textContent = 'Mulai Game Baru';
+            tombolUlang.classList.add('tombolUlang');
+            document.querySelector('.container').appendChild(tombolUlang);
+            tombolUlang.addEventListener('click', resetGame);
+        }
+
+        function resetGame() {
+            hitunganTebakan = 1;
+            const pSemua = document.querySelectorAll('.hasil p');
+            for (let i = 0; i < pSemua.length; i++) {
+                pSemua[i].textContent = '';
+            }
+            tombolUlang.parentNode.removeChild(tombolUlang);
+
+            tebakanMasuk.disabled = false;
+            tombolTebak.disabled = false;
+            tebakanMasuk.value = '';
+            tebakanMasuk.focus();
+            hasilTebakan.classList.remove('benar');
+            hasilTebakan.classList.remove('salah');
+
+            angkaAcak = Math.floor(Math.random() * 100) + 1;
+        }
+    </script>
+</body>
+</html>

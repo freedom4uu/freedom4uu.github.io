@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Struktur Halaman Web</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333; /* Warna latar belakang gelap untuk body */
+            color: white;
+        }
+
+        .header {
+            background-color: #FF5733; /* Merah */
+            padding: 20px;
+            text-align: center;
+        }
+
+        .navigasi {
+            background-color: #FFC300; /* Oranye */
+            padding: 10px;
+            text-align: center;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap; /* Memastikan tata letak responsif */
+        }
+
+        .sidebar {
+            background-color: #FF5733; /* Merah */
+            padding: 20px;
+            width: 20%; /* Lebar sidebar */
+            box-sizing: border-box;
+        }
+
+        .content {
+            background-color: #FFC300; /* Oranye */
+            padding: 20px;
+            flex-grow: 1; /* Mengisi ruang yang tersisa */
+            text-align: center;
+        }
+
+        .footer {
+            background-color: #FF5733; /* Merah */
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Responsif untuk layar kecil */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Header</h1>
+    </header>
+    
+    <nav class="navigasi">
+        <p>Menu Navigasi</p>
+    </nav>
+    
+    <main class="content-wrapper">
+        <aside class="sidebar kiri">
+            <p>Sidebar</p>
+        </aside>
+        
+        <section class="content">
+            <p>Content</p>
+        </section>
+        
+        <aside class="sidebar kanan">
+            <p>Sidebar</p>
+        </aside>
+    </main>
+    
+    <footer class="footer">
+        <p>Footer</p>
+    </footer>
+</body>
+</html>
